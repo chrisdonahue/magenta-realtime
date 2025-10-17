@@ -30,7 +30,7 @@ RUN git clone https://github.com/google-research/t5x.git /t5x && \
     pushd /t5x && \
     git checkout 92c5b467a5964d06c351c7eae4aa4bcd341c7ded && \
     sed -i 's|flax @ git+https://github.com/google/flax#egg=flax|flax==0.10.6|g' setup.py && \
-    python -m pip install -e .[gpu] && \
+    python -m pip install --use-deprecated=legacy-resolver -e .[gpu] && \
     popd
 
 # Create Magenta RealTime library placeholder
@@ -44,9 +44,7 @@ RUN sed -i 's|t5x\[gpu\] @ git+https://github.com/google-research/t5x\.git@92c5b
     sed -i 's|t5x @ git+https://github.com/google-research/t5x\.git@92c5b46|t5x|g' pyproject.toml
 
 # Install Magenta RealTime and dependencies
-RUN python -m pip install -e .[gpu]
-RUN python -m pip uninstall -y tensorflow tensorflow-cpu tensorflow-text
-RUN python -m pip install tf-nightly==2.20.0.dev20250619 tensorflow-text-nightly==2.20.0.dev20250316
+RUN python -m pip install --use-deprecated=legacy-resolver -e .[gpu]
 
 # Copy library and tests (last, to improve caching)
 COPY magenta_rt magenta_rt
